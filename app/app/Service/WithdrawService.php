@@ -50,7 +50,7 @@ class WithdrawService
 
     public function processWithdraw(string $withdrawId, string $accountId, float $amount): void
     {
-        // 1. Tenta debitar saldo de forma atômica
+        // 1. Tenta debitar saldo de forma
         $updated = Db::update(
             'UPDATE accounts SET balance = balance - ? WHERE id = ? AND balance >= ?',
             [$amount, $accountId, $amount]
