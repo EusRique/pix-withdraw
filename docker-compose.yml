@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  app:
+    environment:
+    - TZ=America/Sao_Paulo
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: pix_app
+    volumes:
+      - ./app:/var/www
+    working_dir: /var/www
+    ports:
+      - "9501:9501"
+    depends_on:
+      - mysql
+      - mailhog
+    networks:
+      - pix_net
+
+  mysql:
+    image: mysql:8
+    container_name: pix_mysql
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pix
+    ports:
+      - "3306:3306"
+    networks:
+      - pix_net
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: pix_mailhog
+    ports:
+      - "8025:8025"
+    networks:
+      - pix_net
+
+networks:
+  pix_net:
